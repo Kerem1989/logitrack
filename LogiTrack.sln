@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogiTrack", "LogiTrack\LogiTrack.csproj", "{C5AF7B7F-E963-4DC3-8194-8D974B58A086}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5AF7B7F-E963-4DC3-8194-8D974B58A086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5AF7B7F-E963-4DC3-8194-8D974B58A086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5AF7B7F-E963-4DC3-8194-8D974B58A086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5AF7B7F-E963-4DC3-8194-8D974B58A086}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
