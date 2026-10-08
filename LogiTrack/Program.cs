@@ -1,3 +1,37 @@
+using LogiTrack.Models;
+using Microsoft.EntityFrameworkCore;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var order = new Order(1001, "Samir");
+        order.AddItem(new InventoryItem("Pallet Jack", 12, "Warehouse A") { ItemID = 1 });
+        order.AddItem(new InventoryItem("Forklift", 2, "Warehouse B") { ItemID = 2 });
+        order.AddItem(new InventoryItem("Shrink Wrap", 40, "Warehouse A") { ItemID = 3 });
+        order.RemoveItem(3);
+        order.GetOrderSummary();
+    }
+
+    // Projects each order to a summary so the item count is computed in SQL; no InventoryItem rows are loaded
+    static void PrintOrderSummaries(LogiTrackContext context)
+    {
+        var summaries = context.Orders
+            .AsNoTracking()
+            .OrderBy(o => o.DatePlaced)
+            .Select(o => new OrderSummary(o.OrderId, o.CustomerName, o.DatePlaced, o.OrderList.Count));
+
+        // Iterate the query directly to stream rows instead of buffering them with ToList()
+        foreach (var s in summaries)
+        {
+            Console.WriteLine($"Order: {s.OrderId} for {s.CustomerName} | Items: {s.ItemCount} | Placed: {s.DatePlaced}");
+        }
+    }
+}
+
+record OrderSummary(int OrderId, string CustomerName, DateTime DatePlaced, int ItemCount);
+
+/*
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,28 +48,8 @@ var builder = WebApplication.CreateBuilder(args);
 
     app.UseHttpsRedirection();
 
-    var summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
 
-    app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-            new WeatherForecast
-                (
-                DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                Random.Shared.Next(-20, 55),
-                summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-        .WithName("GetWeatherForecast");
 
     app.Run();
+    */
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
