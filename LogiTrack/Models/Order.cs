@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace LogiTrack.Models ;
 
@@ -9,6 +10,8 @@ namespace LogiTrack.Models ;
         public int OrderId { get; set; }
         public string CustomerName { get; set; }
         public DateTime DatePlaced { get; set; }
+        [JsonIgnore]
+
         public List<InventoryItem> OrderList { get; set; } = new List<InventoryItem>();
         
         public Order() {}
@@ -33,7 +36,7 @@ namespace LogiTrack.Models ;
 
         public void RemoveItem(int itemId)
         {
-            OrderList.RemoveAll(x => x.ItemID == itemId);
+            OrderList.RemoveAll(x => x.ItemId == itemId);
         }
 
         public void GetOrderSummary()

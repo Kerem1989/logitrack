@@ -18,7 +18,7 @@ namespace LogiTrack.Migrations
 
             modelBuilder.Entity("LogiTrack.Models.InventoryItem", b =>
                 {
-                    b.Property<int>("ItemID")
+                    b.Property<int>("ItemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -36,7 +36,7 @@ namespace LogiTrack.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ItemID");
+                    b.HasKey("ItemId");
 
                     b.HasIndex("OrderId");
 
@@ -66,7 +66,7 @@ namespace LogiTrack.Migrations
                     b.HasOne("LogiTrack.Models.Order", "Order")
                         .WithMany("OrderList")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Order");
                 });

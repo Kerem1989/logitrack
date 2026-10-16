@@ -16,6 +16,6 @@ public class LogiTrackContext : DbContext
             .HasMany(o => o.OrderList)
             .WithOne(i => i.Order)
             .HasForeignKey(i => i.OrderId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

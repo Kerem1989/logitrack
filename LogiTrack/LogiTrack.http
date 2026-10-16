@@ -1,6 +1,43 @@
-@LogiTrack_HostAddress = http://localhost:5247
 
-GET {{LogiTrack_HostAddress}}/weatherforecast/
-Accept: application/json
+GET http://localhost:5247/api/Inventory
 
 ###
+
+DELETE http://localhost:5247/api/Inventory/1
+
+###
+
+POST http://localhost:5247/api/Inventory
+Content-Type: application/json
+
+{
+    "name": "Widget A",
+    "quantity": 10,
+    "location": "Warehouse A"
+}
+
+###
+GET http://localhost:5247/api/orders
+
+###
+GET http://localhost:5247/api/orders/1
+
+###
+POST http://localhost:5247/api/orders
+Content-Type: application/json
+
+[
+    {
+        "Name" : "Widget A",
+        "Quantity" : 2,
+        "Location" : "Warehouse A"
+    },
+    {
+        "Name" : "Widget B",
+        "Quantity" : 1,
+        "Location" : "Warehouse B"
+    }
+]
+
+###
+DELETE http://localhost:5247/api/orders/6
