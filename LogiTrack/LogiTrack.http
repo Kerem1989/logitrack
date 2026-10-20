@@ -1,13 +1,16 @@
 
 GET http://localhost:5247/api/Inventory
+Authorization: Bearer {{token}}
 
 ###
 
-DELETE http://localhost:5247/api/Inventory/1
+DELETE http://localhost:5247/api/Inventory/30
+Authorization: Bearer {{token}}
 
 ###
 
 POST http://localhost:5247/api/Inventory
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -18,12 +21,15 @@ Content-Type: application/json
 
 ###
 GET http://localhost:5247/api/orders
+Authorization: Bearer {{token}}
 
 ###
 GET http://localhost:5247/api/orders/1
+Authorization: Bearer {{token}}
 
 ###
 POST http://localhost:5247/api/orders
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 [
@@ -40,4 +46,31 @@ Content-Type: application/json
 ]
 
 ###
-DELETE http://localhost:5247/api/orders/6
+# @no-redirect
+DELETE http://localhost:5247/api/orders/5
+Authorization: Bearer {{token}}
+Set-Cookie: .AspNetCore.Identity.Application=CfDJ8Au-r-AfYGpFrl_EU95YcrFGlCXHiII12e35x5YrwKe2Ilfa7gt3UbVSFDnbE-Q44IjcOBzEL33vefpO1UyyCtznctAahU30pDeig03sTYXcCtfVGLZxFdhJbMubU7cxaLBovPv1pj01XCD01zasJivSxbc7Fv8PtrPhocENMISqe6CjbHEr_4iY06htIww-zd_D4Mikckac2VsP1otFm39neuhn9NaiWUHOfDSeq0nEYMuEzOihR1RErxxOjrAywdzTxBL1EsaifMDOb6BKM-AY4hjoz4PU6QleEuPxzPSW2qpAwXjEXlyqkD0BqU_Hwv-RYaWwgcEXU_D1MYTvPvaSbuIHgg1eTOEnubZvHAFAdlomnbZrzZAnG2iPhGXr9SqI1b3jRY832-1iZqFom8KKbSCcCyEIKcWCZXNawpK3qWdDzHYsINCsi0CCd5_YiwkrHMSSN8vFaxi0IxClqWXeoE-qgl6_HFeURw4NocC0Kud7B5ooV1eKHVVrSbkRVd0gwDurR1GYc6DXFBfotk3I6eJTJGmoXMnYEvNFz8KAXPadQ16MmN_20QLuIbtDY_cU9SHqPq1KQFp3arzIGqxL7ivatLe0o5wiwpGOxXb7Uqj81W9ixJp2R5Jx7-DUVKV3fTyxxTq_OEBPg3sX0IGbfvOB6GqgYQeu_c-DGbLa_eKFHJ4hlvioJWaoazUFOWJ9Cj_7wkebSLLdB6G2oFo; path=/; samesite=lax; httponly
+
+###
+POST http://localhost:5247/api/Auth/register
+Content-Type: application/json
+
+{
+    "Email": "testuser@example.com",
+    "Username": "testuser",
+    "Password": "TestPassword123!",
+    "FirstName": "Test",
+    "LastName": "User"
+}
+
+###
+POST http://localhost:5247/api/Auth/login
+Content-Type: application/json
+
+{
+    "Username": "testuser",
+    "Password": "TestPassword123!"
+}
+
+> {% client.global.set("token", response.body.token); %}
+

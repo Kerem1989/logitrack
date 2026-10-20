@@ -1,10 +1,12 @@
 ﻿using LogiTrack.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LogiTrack.Controllers ;
 
     [ApiController]
+    [Authorize]
     [Route("api/orders")]
     public class OrderController : ControllerBase
     {
@@ -65,10 +67,11 @@ namespace LogiTrack.Controllers ;
             await _logiTrackContext.SaveChangesAsync();
             return order;
         }
-
+        
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Order>> DeleteOrder(int id, CancellationToken cancellationToken)
         {
             var order = await _logiTrackContext.Orders.FindAsync([id], cancellationToken);

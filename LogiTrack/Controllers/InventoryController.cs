@@ -1,9 +1,11 @@
 ﻿using LogiTrack.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LogiTrack.Controllers ;
 
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class InventoryController : ControllerBase
     {
@@ -37,6 +39,7 @@ namespace LogiTrack.Controllers ;
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
         public ActionResult<InventoryItem> DeleteInventoryItem(int id)
