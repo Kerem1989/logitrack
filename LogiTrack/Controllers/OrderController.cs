@@ -1,7 +1,9 @@
 ﻿using LogiTrack.Models;
+using LogiTrack.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LogiTrack.Controllers ;
 
@@ -11,17 +13,20 @@ namespace LogiTrack.Controllers ;
     public class OrderController : ControllerBase
     {
         private readonly LogiTrackContext _logiTrackContext;
+        private readonly IMemoryCache _cache;
 
-        public OrderController(LogiTrackContext logiTrackContext)
+        public OrderController(LogiTrackContext logiTrackContext, IMemoryCache cache)
         {
             _logiTrackContext = logiTrackContext;
+            _cache = cache;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetAllOrders(CancellationToken cancellationToken)
         {
             // An empty collection is a valid result, not an error
-            return await _logiTrackContext.Orders.ToListAsync(cancellationToken);
+            // Read-only: skip change tracking
+            return await _logiTrackContext.Orders.AsNoTracking().ToListAsync(cancellationToken);
         }
 
         [HttpGet("{id}")]
@@ -65,6 +70,8 @@ namespace LogiTrack.Controllers ;
             order.CustomerName = "John Doe";
             _logiTrackContext.Orders.Add(order);
             await _logiTrackContext.SaveChangesAsync();
+            // The order's items are new InventoryItems rows
+            _cache.Remove(CacheKeys.AllInventory);
             return order;
         }
         
@@ -81,6 +88,8 @@ namespace LogiTrack.Controllers ;
             }
             _logiTrackContext.Orders.Remove(order);
             await _logiTrackContext.SaveChangesAsync();
+            // Deleting an order cascade-deletes its InventoryItems
+            _cache.Remove(CacheKeys.AllInventory);
             return order;
         }
 

@@ -55,6 +55,7 @@ var builder = WebApplication.CreateBuilder(args);
                 ClockSkew = TimeSpan.FromMinutes(1)
             };
         });
+    builder.Services.AddMemoryCache();
     var app = builder.Build();
 
     using (var scope = app.Services.CreateScope())
