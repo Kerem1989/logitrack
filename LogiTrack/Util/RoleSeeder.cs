@@ -1,18 +1,17 @@
 ﻿using LogiTrack.Models;
+using LogiTrack.Util;
 using Microsoft.AspNetCore.Identity;
 
 public static class RoleSeeder
 {
     public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
     {
-        if (!await roleManager.RoleExistsAsync("Admin"))
+        foreach (var role in Roles.All)
         {
-            await roleManager.CreateAsync(new IdentityRole("Admin"));
-        }
-
-        if (!await roleManager.RoleExistsAsync("User"))
-        {
-            await roleManager.CreateAsync(new IdentityRole("User"));
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
         }
     }
 
@@ -39,9 +38,9 @@ public static class RoleSeeder
             }
         }
 
-        if (!await userManager.IsInRoleAsync(admin, "Admin"))
+        if (!await userManager.IsInRoleAsync(admin, Roles.Admin))
         {
-            await userManager.AddToRoleAsync(admin, "Admin");
+            await userManager.AddToRoleAsync(admin, Roles.Admin);
         }
     }
 }

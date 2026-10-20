@@ -8,8 +8,10 @@ namespace LogiTrack.Models ;
     {
         [Key]
         public int OrderId { get; set; }
-        public string CustomerName { get; set; }
+        public string CustomerName { get; set; } = "";
         public DateTime DatePlaced { get; set; }
+        // Owner; null for orders placed before ownership was tracked (visible to Admins only)
+        public string? UserId { get; set; }
         [JsonIgnore]
 
         public List<InventoryItem> OrderList { get; set; } = new List<InventoryItem>();
@@ -20,8 +22,7 @@ namespace LogiTrack.Models ;
         {
             OrderId = orderId;
             CustomerName = customerName;
-            DatePlaced = DateTime.Now;
-            OrderList = new List<InventoryItem>();
+            DatePlaced = DateTime.UtcNow;
         }
         
         public void AddItem(InventoryItem item)

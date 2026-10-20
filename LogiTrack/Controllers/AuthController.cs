@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using LogiTrack.Models;
+using LogiTrack.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -48,13 +49,13 @@ namespace LogiTrack.Controllers ;
                     detail: string.Join(" ", result.Errors.Select(e => e.Description)));
             }
 
-            await _userManager.AddToRoleAsync(user, "User");
+            await _userManager.AddToRoleAsync(user, Roles.User);
             return Ok("User registered successfully");
         }
 
         [HttpPost]
         [Route("promote/{userName}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Promote(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
@@ -66,9 +67,9 @@ namespace LogiTrack.Controllers ;
                     detail: $"No user exists with username '{userName}'.");
             }
 
-            if (!await _userManager.IsInRoleAsync(user, "Admin"))
+            if (!await _userManager.IsInRoleAsync(user, Roles.Admin))
             {
-                await _userManager.AddToRoleAsync(user, "Admin");
+                await _userManager.AddToRoleAsync(user, Roles.Admin);
             }
             // The new role is in the user's next token, not any token they already hold
             return Ok($"{userName} is now an Admin");

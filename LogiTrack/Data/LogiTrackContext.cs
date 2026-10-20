@@ -7,8 +7,9 @@ public class LogiTrackContext : IdentityDbContext<ApplicationUser>
     public DbSet<InventoryItem> InventoryItems { get; set; }
     public DbSet<Order> Orders { get; set; }
     
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite("Data Source=logitrack.db");
+    public LogiTrackContext(DbContextOptions<LogiTrackContext> options) : base(options)
+    {
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,5 +20,12 @@ public class LogiTrackContext : IdentityDbContext<ApplicationUser>
             .WithOne(i => i.Order)
             .HasForeignKey(i => i.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Deleting a user keeps their orders, unowned
+        modelBuilder.Entity<Order>()
+            .HasOne<ApplicationUser>()
+            .WithMany()
+            .HasForeignKey(o => o.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

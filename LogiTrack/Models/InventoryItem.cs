@@ -6,9 +6,9 @@ namespace LogiTrack.Models ;
     {
         [Key]
         public int ItemId {get; set;}
-        public string Name {get; set;}
+        public string Name {get; set;} = "";
         public int Quantity {get; set;}
-        public string Location {get; set;}
+        public string Location {get; set;} = "";
 
         // Foreign key + navigation back to the owning Order (nullable: items can exist in stock without an order)
         public int? OrderId {get; set;}
